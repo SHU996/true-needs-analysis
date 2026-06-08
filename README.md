@@ -1,15 +1,15 @@
-# True Needs Analysis（真需求）
+# True Needs Analysis（真需求验证）
 
-> 基于梁宁《真需求》框架的 Claude Code Skill —— 在写代码之前，先验证需求是不是真的。
+> 基于梁宁《真需求》框架的 WorkBuddy Skill —— 在动手之前，先验证需求是不是真的。
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Claude Code Skill](https://img.shields.io/badge/Claude%20Code-Skill-blue)](https://docs.claude.codes)
+[![WorkBuddy Skill](https://img.shields.io/badge/WorkBuddy-Skill-blue)](https://www.codebuddy.cn)
 
 ---
 
 ## 这是什么？
 
-`true-needs-analysis` 是一个 Claude Code 技能（Skill），当你提出一个产品想法或功能需求时，它会用梁宁《真需求》中的核心框架，帮你系统性地验证：**这个需求是真的，还是你想象出来的？**
+`true-needs-analysis` 是一个 WorkBuddy 技能（Skill）。当你提出一个产品想法或功能需求时，它会用梁宁《真需求》的核心框架，帮你系统性地验证：**这个需求是真的，还是你想象出来的？**
 
 大多数产品失败不是因为做得不好，而是因为建立在了**想象的需求**上。
 
@@ -20,53 +20,59 @@
 三者都必须具体、可观察，不能是推断
 ```
 
-## 分析流程（5 步）
+## 分析流程（3 步）
 
 | 步骤 | 名称 | 核心问题 |
 |:----:|------|----------|
-| 1 | 想象 vs 现实检验 | 我们怎么知道这个痛苦是真实存在的？ |
-| 2 | 三要素验证 | 用户是谁？场景在哪？痛点是什么？ |
-| 3 | 需求类型判断 | 必备 / 期望 / 魅力 / 无差异 / 反向？ |
-| 4 | 价值层次判断 | 功能价值？情绪价值？资产价值？ |
-| 5 | 发心判断 | 关怀型还是操纵型？ |
+| 1 | 快速过滤 | 用户是谁？痛苦在哪？有人在绕路解决吗？ |
+| 2 | 深度分析（可选）| 三要素精度 / KANO 类型 / 价值护城河 |
+| 3 | 输出验证报告 | ✅ 可以推进 / ⚠️ 需要先调查 / 🛑 暂停 |
 
-## 验证清单（7 项全过才算真需求）
+## 验证清单（快速过滤 3 问）
 
-- [ ] 有现实证据 —— 可观察的用户行为，不是推断
-- [ ] 用户是具体的人 —— 不是泛化群体
-- [ ] 场景是具体的 —— 时间、地点、触发条件明确
-- [ ] 痛点是具体的 —— 到底什么东西坏了、浪费了、在痛
-- [ ] 需求类型是必备/期望/魅力 —— 不是无差异或反向
-- [ ] 至少有情绪价值或资产价值其中之一
-- [ ] 出发点是关怀，不是操纵
+向用户提出以下三个问题，**等待回答后再继续**：
+
+1. **用户是谁？** 你能描述一个具体的人，他/她正处于什么处境吗？
+2. **痛苦在哪？** 有没有你亲眼观察到、或者看到有人抱怨过的具体行为？
+3. **有没有人在绕路解决这个问题？** 目前用户怎么凑合处理？有人为此付过钱吗？
+
+三个都有具体答案 → ✅ 通过，可以继续  
+有 1-2 个模糊 → ⚠️ 存在风险，告知需要调查的地方  
+三个都答不上来 → 🛑 目前是想象中的需求，建议先去观察
 
 ## 安装
 
-将 `SKILL.md` 放置到你的 Claude Code skills 目录：
-
-**macOS / Linux：**
-```bash
-cp SKILL.md ~/.claude/skills/true-needs-analysis.md
-```
+将 `SKILL.md` 放置到你的 WorkBuddy skills 目录：
 
 **Windows：**
 ```powershell
-copy SKILL.md %USERPROFILE%\.claude\skills\true-needs-analysis.md
+# 用户级（推荐）
+copy SKILL.md %USERPROFILE%\.workbuddy\skills\true-needs-analysis\SKILL.md
+```
+
+**macOS / Linux：**
+```bash
+# 用户级（推荐）
+mkdir -p ~/.workbuddy/skills/true-needs-analysis
+cp SKILL.md ~/.workbuddy/skills/true-needs-analysis/SKILL.md
 ```
 
 ## 使用方式
 
-在 Claude Code 对话中，当你提出产品想法或新功能需求时，这个 skill 会自动触发。你也可以显式调用：
+Skill 会在你**明确要求验证需求**时自动触发，例如：
 
 ```
-请用真需求框架分析这个产品想法：我想做一个帮助大学生找兼职的App
+帮我验证这个想法是否成立：我想做一个帮助大学生找兼职的App
+我不确定这个需求是否真实，能帮我分析一下吗？
 ```
+
+> ⚠️ 注意：如果你说"我想做 X"但意图是问**怎么做**，Skill 不会触发——它只在你问**值不值得做**时才运行。
 
 ## 触发时机
 
-- 当你说 "我想做 X" 或提出一个产品想法时
-- 当需求描述听起来像是「应该如此」而非「观察到的事实」时
-- 当你怀疑问题描述并非用户真正遇到的问题时
+- 用户明确说"帮我验证"、"帮我分析需求"、"值不值得做"
+- 用户表达对某个想法的不确定性
+- **不会**在用户只是问"怎么做"时误触发
 
 ## 红旗词
 
@@ -80,9 +86,8 @@ copy SKILL.md %USERPROFILE%\.claude\skills\true-needs-analysis.md
 
 - **应然 vs 实然**：你以为的 vs 你观察到的
 - **KANO 模型**：判断功能对用户重要程度的分类方法
-- **三要素**：用户 + 场景 + 痛点
+- **三要素**：用户 + 场景 + 痛点（必须具体到可证伪）
 - **价值三层次**：功能价值 → 情绪价值 → 资产价值
-- **发心**：做产品的原始出发点
 
 ## License
 
