@@ -1,98 +1,93 @@
-# True Needs Analysis（真需求验证）
+# true-needs-analysis
 
-> 基于梁宁《真需求》框架的 WorkBuddy Skill —— 在动手之前，先验证需求是不是真的。
+> 基于《真需求》（梁宁著）的需求验证工具包 — 在动手开发之前，先验证需求是不是真的。
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![WorkBuddy Skill](https://img.shields.io/badge/WorkBuddy-Skill-blue)](https://www.codebuddy.cn)
-
----
-
-## 这是什么？
-
-`true-needs-analysis` 是一个 WorkBuddy 技能（Skill）。当你提出一个产品想法或功能需求时，它会用梁宁《真需求》的核心框架，帮你系统性地验证：**这个需求是真的，还是你想象出来的？**
+## 这是什么
 
 大多数产品失败不是因为做得不好，而是因为建立在了**想象的需求**上。
 
-## 核心原则
+这个工具包把《真需求》的方法论变成了可执行的 AI 工具，帮你用最快的速度判断一个想法到底值不值得做。
+
+## 工具包结构
 
 ```
-真需求 = 用户 + 场景 + 痛点
-三者都必须具体、可观察，不能是推断
+true-needs-analysis/
+├── skills/
+│   ├── true-needs-filter/    # 快速过滤：30秒出结论
+│   │   └── SKILL.md
+│   └── true-needs-deep/      # 深度分析：KANO+价值护城河
+│       └── SKILL.md
+├── competitor_analysis.py     # 竞品分析脚本：自动搜索互联网竞品
+├── SKILL.md                   # 旧版单文件skill（兼容保留）
+├── LICENSE
+└── README.md
 ```
 
-## 分析流程（3 步）
+## 两个 Skill
 
-| 步骤 | 名称 | 核心问题 |
-|:----:|------|----------|
-| 1 | 快速过滤 | 用户是谁？痛苦在哪？有人在绕路解决吗？ |
-| 2 | 深度分析（可选）| 三要素精度 / KANO 类型 / 价值护城河 |
-| 3 | 输出验证报告 | ✅ 可以推进 / ⚠️ 需要先调查 / 🛑 暂停 |
+| Skill | 定位 | 触发词 | 用时 | 输出 |
+|-------|------|--------|------|------|
+| **true-needs-filter** | 急诊分诊 | "值不值得做"、"快速判断" | 30秒 | 通过/风险/暂停 |
+| **true-needs-deep** | 全面体检 | "深入分析"、"详细分析" | 5-10分钟 | 三要素+KANO+护城河报告 |
 
-## 验证清单（快速过滤 3 问）
+### true-needs-filter（快速过滤）
 
-向用户提出以下三个问题，**等待回答后再继续**：
+只问三个问题：
+1. 用户是谁？能不能具体到一个人？
+2. 痛苦在哪？有没有观察到的具体行为？
+3. 有没有人在绕路解决这个问题？
 
-1. **用户是谁？** 你能描述一个具体的人，他/她正处于什么处境吗？
-2. **痛苦在哪？** 有没有你亲眼观察到、或者看到有人抱怨过的具体行为？
-3. **有没有人在绕路解决这个问题？** 目前用户怎么凑合处理？有人为此付过钱吗？
+根据回答质量给出：✅ 可以推进 / ⚠️ 需要先调查 / 🛑 暂停
 
-三个都有具体答案 → ✅ 通过，可以继续  
-有 1-2 个模糊 → ⚠️ 存在风险，告知需要调查的地方  
-三个都答不上来 → 🛑 目前是想象中的需求，建议先去观察
+### true-needs-deep（深度分析）
 
-## 安装
+三个维度的系统性检验：
+1. **三要素精度检验** — 用户、场景、痛点是否足够具体
+2. **KANO 类型判断** — 必备/期望/魅力/无差异/反向
+3. **价值护城河检验** — 功能价值/情绪价值/资产价值
 
-将 `SKILL.md` 放置到你的 WorkBuddy skills 目录：
+## 竞品分析脚本
 
-**Windows：**
-```powershell
-# 用户级（推荐）
-copy SKILL.md %USERPROFILE%\.workbuddy\skills\true-needs-analysis\SKILL.md
-```
+不依赖任何 AI 平台，直接命令行跑：
 
-**macOS / Linux：**
 ```bash
-# 用户级（推荐）
-mkdir -p ~/.workbuddy/skills/true-needs-analysis
-cp SKILL.md ~/.workbuddy/skills/true-needs-analysis/SKILL.md
+# 安装依赖
+pip install duckduckgo-search
+
+# 直接使用
+python competitor_analysis.py "我想做一个帮助大学生找兼职的App"
+
+# 交互模式
+python competitor_analysis.py --interactive
+
+# 指定搜索量和输出目录
+python competitor_analysis.py "AI招聘工具" -m 10 -o ./reports
 ```
 
-## 使用方式
+设置 `OPENAI_API_KEY` 或 `DEEPSEEK_API_KEY` 环境变量后，脚本会自动调用 AI 生成深度分析报告。不设也行，会输出搜索结果和分析提示词，复制到任意 AI 工具里用。
 
-Skill 会在你**明确要求验证需求**时自动触发，例如：
+## 安装方式
 
+### 方式一：作为 Skill 安装
+
+将 `skills/true-needs-filter/` 和 `skills/true-needs-deep/` 目录复制到你的 AI 助手的 skills 目录下。
+
+适用于：WorkBuddy、Claude Code、Cursor 等支持 SKILL.md 的 AI 助手。
+
+### 方式二：直接用竞品分析脚本
+
+```bash
+git clone https://github.com/SHU996/true-needs-analysis.git
+cd true-needs-analysis
+pip install duckduckgo-search
+python competitor_analysis.py "你的产品想法"
 ```
-帮我验证这个想法是否成立：我想做一个帮助大学生找兼职的App
-我不确定这个需求是否真实，能帮我分析一下吗？
-```
 
-> ⚠️ 注意：如果你说"我想做 X"但意图是问**怎么做**，Skill 不会触发——它只在你问**值不值得做**时才运行。
+## 来源
 
-## 触发时机
-
-- 用户明确说"帮我验证"、"帮我分析需求"、"值不值得做"
-- 用户表达对某个想法的不确定性
-- **不会**在用户只是问"怎么做"时误触发
-
-## 红旗词
-
-需求描述中出现以下词语，大概率是想象出来的：
-
-> "应该" · "显然" · "大家都" · "逻辑上说得通" · "用户应该会需要"
-
-## 理论基础
-
-源自 **梁宁《真需求》**（新星出版社，2024），核心概念包括：
-
-- **应然 vs 实然**：你以为的 vs 你观察到的
-- **KANO 模型**：判断功能对用户重要程度的分类方法
-- **三要素**：用户 + 场景 + 痛点（必须具体到可证伪）
-- **价值三层次**：功能价值 → 情绪价值 → 资产价值
+- 方法论框架：梁宁《真需求》（新星出版社，2024）
+- 核心理念：真需求 = 用户 + 场景 + 痛点，三者都必须具体、可观察，不能是推断
 
 ## License
 
-MIT © 2025
-
----
-
-*先验证需求是真实的，再讨论怎么做。走形式和违背原则是一回事。*
+MIT
