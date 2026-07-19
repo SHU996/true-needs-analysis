@@ -72,9 +72,10 @@ description: Use when the user explicitly asks for a THOROUGH analysis of a prod
 
 **执行方式：**
 
-使用 bash 工具运行以下命令（将 `{product_desc}` 替换为用户的产品描述）：
+先确保依赖已安装，然后运行脚本（将 `{product_desc}` 替换为用户的产品描述）：
 
 ```bash
+pip install ddgs
 python competitor_analysis.py "{product_desc}" -m 8
 ```
 
