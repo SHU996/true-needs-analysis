@@ -10,7 +10,7 @@ true-needs-analysis 竞品分析脚本
     python competitor_analysis.py --interactive
 
 依赖安装:
-    pip install duckduckgo-search
+    pip install ddgs
 
 可选环境变量:
     OPENAI_API_KEY    设置后自动调用GPT做深度分析
@@ -23,14 +23,15 @@ import json
 import argparse
 from datetime import datetime
 
-import warnings
-warnings.filterwarnings("ignore", category=RuntimeWarning)
-
+# 兼容新版 ddgs 和旧版 duckduckgo_search
 try:
-    from duckduckgo_search import DDGS
+    from ddgs import DDGS
 except ImportError:
-    print("请先安装依赖: pip install duckduckgo-search")
-    sys.exit(1)
+    try:
+        from duckduckgo_search import DDGS
+    except ImportError:
+        print("请先安装依赖: pip install ddgs")
+        sys.exit(1)
 
 
 # ========== 搜索模块 ==========
@@ -55,7 +56,7 @@ def search_competitors(product_desc: str, max_results: int = 8) -> list:
     for query in queries:
         try:
             with DDGS() as ddgs:
-                results = list(ddgs.text(query, max_results=max_results, region="cn-zh"))
+                results = list(ddgs.text(query, max_results=max_results, region="wt-wt"))
                 for r in results:
                     url = r.get("href", "")
                     if url and url not in seen_urls:
