@@ -1,6 +1,6 @@
 ---
 name: true-needs-deep
-description: Use when the user explicitly asks for a THOROUGH analysis of a product idea or feature, OR when the user proposes a product concept — e.g. "帮我深入分析这个需求", "详细分析一下", "做个体检", "我想做一个XX App", "我想做一个XX网站", "我想做一个XX工具", "deep analysis", "thorough validation", "I want to build a XX app/website". This runs the full analysis framework: 3-element precision check, KANO type classification, and value moat assessment. Do NOT trigger for quick checks (use true-needs-filter instead) or when the user asks HOW to build something.
+description: Use when the user explicitly asks for a THOROUGH analysis of a product idea or feature, OR when the user proposes a product concept — e.g. "帮我深入分析这个需求", "详细分析一下", "做个体检", "我想做一个XX App", "我想做一个XX网站", "我想做一个XX工具", "deep analysis", "thorough validation", "I want to build a XX app/website". This runs the full analysis framework: 3-element precision check, competitor market research (via competitor_analysis.py), KANO type classification, and value moat assessment. Do NOT trigger for quick checks (use true-needs-filter instead) or when the user asks HOW to build something.
 ---
 
 # True Needs Deep（真需求深度分析）
@@ -15,7 +15,7 @@ description: Use when the user explicitly asks for a THOROUGH analysis of a prod
 深度分析告诉你"做得对不对、护城河够不够深"
 ```
 
-如果 true-needs-filter 是急诊分诊，true-needs-deep 就是全面体检。这个skill会对需求做三个维度的系统性检验。
+如果 true-needs-filter 是急诊分诊，true-needs-deep 就是全面体检。这个skill会对需求做四个维度的系统性检验：三要素精度、竞品市场调研、KANO类型、价值护城河。
 
 ## 使用前提
 
@@ -45,7 +45,40 @@ description: Use when the user explicitly asks for a THOROUGH analysis of a prod
 - 场景不够具体 → "这个问题在什么时间、什么地点、什么情况下发生？是每天还是偶尔？"
 - 痛点不够具体 → "具体是什么东西坏掉了、卡住了、慢了？用户现在的替代方案是什么？"
 
-### 第二步：KANO 类型判断
+### 第二步：竞品市场调研
+
+三要素检验通过后，自动调用 `competitor_analysis.py` 脚本搜索互联网，获取市场竞品信息。
+
+**执行方式：**
+
+使用 bash 工具运行以下命令（将 `{product_desc}` 替换为用户的产品描述）：
+
+```bash
+python competitor_analysis.py "{product_desc}" -m 8
+```
+
+**脚本会自动完成：**
+1. 根据产品描述生成4组搜索词（竞品分析/对比推荐/类似产品/行业现状）
+2. 用 DuckDuckGo 搜索互联网，去重提取结果
+3. 输出搜索结果摘要 + 分析提示词
+
+**执行后，AI 需要做两件事：**
+
+1. **读取脚本输出**，从搜索结果中提取：
+   - 市场上已有哪些竞品？
+   - 竞品的核心功能和目标用户是什么？
+   - 市场是蓝海还是红海？
+   - 有没有用户在抱怨现有产品？（这是真需求信号）
+
+2. **将竞品信息用于后续步骤**：
+   - 第三步 KANO 判断时，参考竞品已有的功能来判断"哪些是必备型"
+   - 第四步护城河检验时，用竞品对比来评估"用户为什么会选你而不选别人"
+
+**如果脚本执行失败**（网络问题、未安装依赖等）：
+- 不要中断流程，告知用户"竞品搜索暂不可用，以下分析基于用户描述进行"
+- 继续执行后续步骤，在报告中标明"竞品数据缺失"
+
+### 第三步：KANO 类型判断
 
 判断这个功能属于哪一类：
 
@@ -66,7 +99,7 @@ description: Use when the user explicitly asks for a THOROUGH analysis of a prod
 1. 如果有这个功能，你觉得用户会？(很开心 / 还行 / 无所谓)
 2. 如果没有这个功能，你觉得用户会？(很愤怒 / 有点失望 / 无所谓)
 
-### 第三步：价值护城河检验
+### 第四步：价值护城河检验
 
 这个产品给用户创造了几层价值？
 
@@ -80,7 +113,7 @@ description: Use when the user explicitly asks for a THOROUGH analysis of a prod
 
 如果三个价值层只有功能价值有内容 → 在报告中标注"护城河不足，建议补充情绪价值或资产价值的设计"。
 
-### 第四步：输出深度分析报告
+### 第五步：输出深度分析报告
 
 运行完毕后，输出以下格式的结论：
 
@@ -101,6 +134,15 @@ description: Use when the user explicitly asks for a THOROUGH analysis of a prod
 **类型：** [必备 / 期望 / 魅力 / 无差异 / 反向]
 **判断依据：** [如果功能消失，用户会____]
 **策略建议：** [对应的策略]
+
+### 竞品市场调研
+**市场成熟度：** [蓝海 / 红海 / 正在升温]
+**主要竞品：**
+| 竞品 | 核心功能 | 优势 | 劣势 |
+|------|---------|------|------|
+| [竞品1] | [功能] | [优势] | [劣势] |
+| [竞品2] | [功能] | [优势] | [劣势] |
+**差异化机会：** [你的产品相比竞品的机会在哪]
 
 ### 价值护城河
 | 价值层 | 评估 | 说明 |
