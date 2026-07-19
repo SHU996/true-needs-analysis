@@ -85,6 +85,24 @@ description: Use ONLY when the user explicitly asks for a QUICK judgment on whet
 **建议下一步：** [一个具体行动]
 ```
 
+### 衔接步骤：是否进行深度分析？
+
+输出快速过滤结论后，立即向用户提问（选择题，不等待用户主动询问）：
+
+---
+
+**要不要继续做深度分析？**
+
+- **A)** 是，帮我做全面体检（三要素精度 + 竞品调研 + KANO + 护城河）
+- **B)** 不用了，简短结论就够了
+
+---
+
+根据用户选择：
+
+- **选 B（否）** → 流程结束。快速过滤结论即为最终报告，不再追问。
+- **选 A（是）** → **自动进入 true-needs-deep 流程**，无需用户重新描述产品想法。直接从 deep skill 的第一步（三要素精度检验）开始执行，将 filter 阶段收集到的信息带入后续分析。
+
 ## 红旗词
 
 需求描述中出现以下词语，大概率是想象出来的：
@@ -109,4 +127,4 @@ description: Use ONLY when the user explicitly asks for a QUICK judgment on whet
 | **快速判断** | true-needs-filter（本skill） | 30秒快速判断 |
 | 深度分析 | true-needs-deep | KANO+价值护城河全面体检 |
 
-快速过滤通过后，如需更深入的分析，可使用 true-needs-deep。
+**两个skill自动衔接：** filter 跑完后会问用户是否深度分析。选"是"则自动进入 deep skill，选"否"则输出简短报告结束。用户无需重新描述产品想法，全程选择题交互。
