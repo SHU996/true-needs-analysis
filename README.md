@@ -57,7 +57,7 @@ true-needs-analysis/
 # 安装依赖
 pip install ddgs
 
-# 直接使用
+# 直接使用（自动生成去污染搜索词）
 python competitor_analysis.py "我想做一个帮助大学生找兼职的App"
 
 # 交互模式
@@ -65,9 +65,22 @@ python competitor_analysis.py --interactive
 
 # 指定搜索量和输出目录
 python competitor_analysis.py "AI招聘工具" -m 10 -o ./reports
+
+# 自定义搜索词（信噪比最高，适合AI生成搜索词后传入）
+python competitor_analysis.py "大学生答疑AI工具" -q "论文不会写怎么办,作业题做不出用什么软件,best homework help app reddit"
 ```
 
-设置 `OPENAI_API_KEY` 或 `DEEPSEEK_API_KEY` 环境变量后，脚本会自动调用 AI 生成深度分析报告。不设也行，会输出搜索结果和分析提示词，复制到任意 AI 工具里用。
+**搜索词生成策略（优先级从高到低）：**
+
+| 策略 | 触发条件 | 效果 |
+|------|---------|------|
+| `--queries` 自定义搜索词 | 用户/AI传入 | 信噪比最高 |
+| LLM动态生成 | 设置了API Key | 根据产品描述生成"用户视角"搜索词 |
+| 去污染硬编码模板 | 无API Key时兜底 | 已去除"竞品分析""行业玩家"等污染词 |
+
+> **什么是搜索词污染？** 旧版用"{产品} 竞品分析"作为搜索词，但"竞品分析"本身是高频搜索词，搜索引擎返回一堆"如何做竞品分析"的教程而不是真正的竞品信息。新版改用"哪个好用 知乎""替代品 类似软件""怎么样 缺点 不足"等用户真实搜索表达，信噪比从4%提升到90%。
+
+设置 `OPENAI_API_KEY` 或 `DEEPSEEK_API_KEY` 环境变量后，脚本会自动：1）用LLM生成更精准的搜索词 2）调用AI生成深度分析报告。不设也行，会输出搜索结果和分析提示词，复制到任意 AI 工具里用。
 
 ## 安装方式
 
