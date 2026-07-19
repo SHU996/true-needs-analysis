@@ -225,4 +225,4 @@ python competitor_analysis.py "{product_desc}" -m 8
 | 快速判断 | true-needs-filter | 30秒快速判断 |
 | **深度分析** | true-needs-deep（本skill） | KANO+价值护城河全面体检 |
 
-如果用户只需要快速判断，建议先用 true-needs-filter。通过后如需深入分析，再使用本skill。
+**两个skill自动衔接：** true-needs-filter 跑完后会问用户是否深度分析，选"是"则自动进入本 skill。本 skill 也可以独立触发（用户直接说"帮我深入分析"或"我想做一个XX App"时）。
