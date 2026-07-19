@@ -79,8 +79,14 @@ pip install ddgs
 python competitor_analysis.py "{product_desc}" -m 8
 ```
 
+**搜索词说明：** 脚本已内置去污染搜索词模板，不再使用"竞品分析""行业玩家"等会污染搜索结果的元词。如果有 API Key（`OPENAI_API_KEY` 或 `DEEPSEEK_API_KEY`），脚本会自动用 LLM 生成更精准的"用户视角"搜索词。也可以通过 `--queries` 参数传入自定义搜索词：
+
+```bash
+python competitor_analysis.py "{product_desc}" -m 8 -q "搜索词1,搜索词2,搜索词3"
+```
+
 **脚本会自动完成：**
-1. 根据产品描述生成4组搜索词（竞品分析/对比推荐/类似产品/行业现状）
+1. 根据产品描述生成去污染搜索词（哪个好用 知乎 / 评测 体验 博客 / 替代品 类似软件 / reddit / 怎么样 缺点 不足）
 2. 用 DuckDuckGo 搜索互联网，去重提取结果
 3. 输出搜索结果摘要 + 分析提示词
 
