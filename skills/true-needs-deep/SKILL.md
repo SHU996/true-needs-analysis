@@ -1,6 +1,6 @@
 ---
 name: true-needs-deep
-description: Use when the user explicitly asks for a THOROUGH analysis of a product idea or feature — e.g. "帮我深入分析这个需求", "详细分析一下", "做个体检", "deep analysis", "thorough validation". This runs the full analysis framework: 3-element precision check, KANO type classification, and value moat assessment. Do NOT trigger for quick checks (use true-needs-filter instead).
+description: Use when the user explicitly asks for a THOROUGH analysis of a product idea or feature, OR when the user proposes a product concept — e.g. "帮我深入分析这个需求", "详细分析一下", "做个体检", "我想做一个XX App", "我想做一个XX网站", "我想做一个XX工具", "deep analysis", "thorough validation", "I want to build a XX app/website". This runs the full analysis framework: 3-element precision check, KANO type classification, and value moat assessment. Do NOT trigger for quick checks (use true-needs-filter instead) or when the user asks HOW to build something.
 ---
 
 # True Needs Deep（真需求深度分析）
@@ -21,6 +21,7 @@ description: Use when the user explicitly asks for a THOROUGH analysis of a prod
 
 **在以下情况运行本 skill：**
 - ✓ 用户明确要求深度分析："帮我深入分析"、"做个体检"、"详细分析一下"
+- ✓ 用户提出产品想法："我想做一个XX App"、"我想做一个XX网站"、"我想做一个XX工具"
 - ✓ 用户已通过 true-needs-filter 快速过滤，想要进一步分析
 - ✗ 用户只想要快速判断 → 建议使用 true-needs-filter
 - ✗ 用户问"怎么做" → 不要拦截，直接帮他做
