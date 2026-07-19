@@ -53,7 +53,7 @@ true-needs-analysis/
 
 ```bash
 # 安装依赖
-pip install duckduckgo-search
+pip install ddgs
 
 # 直接使用
 python competitor_analysis.py "我想做一个帮助大学生找兼职的App"
@@ -80,7 +80,7 @@ python competitor_analysis.py "AI招聘工具" -m 10 -o ./reports
 ```bash
 git clone https://github.com/SHU996/true-needs-analysis.git
 cd true-needs-analysis
-pip install duckduckgo-search
+pip install ddgs
 python competitor_analysis.py "你的产品想法"
 ```
 
